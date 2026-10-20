@@ -5,6 +5,7 @@ import org.example.model.AnimalId;
 import org.example.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,5 +58,13 @@ public class Shelter <T extends Animal>{
             throw new IllegalStateException(animal.getName() + " is already adopted");
         }
         animal.markAsAdopted();
+    }
+    public List<T> sortedByName(){
+        return CollectionUtils.sorted(animals,
+                Comparator.comparing(Animal::getName, String.CASE_INSENSITIVE_ORDER));
+    }
+
+    public List<T> sortedByAge(){
+        return CollectionUtils.sorted(animals, Comparator.comparingInt(Animal::getAge));
     }
 }

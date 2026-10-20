@@ -27,6 +27,8 @@ public class ConsoleMenu {
             new MenuOption(3, "Find animals by species"),
             new MenuOption(4, "List available animals"),
             new MenuOption(5, "Mark animal as adopted"),
+            new MenuOption(6, "Sort animals by name"),
+            new MenuOption(7, "Sort animals by age"),
             new MenuOption(0, "Exit")
     );
 
@@ -48,6 +50,8 @@ public class ConsoleMenu {
                 case 3 -> findBySpecies();
                 case 4 -> printAnimals(shelter.findAvailableAnimals(), "No animals available for adoption.");
                 case 5 -> markAsAdopted();
+                case 6 -> printAnimals(shelter.sortedByName(), "No animals in the shelter.");
+                case 7 -> printAnimals(shelter.sortedByAge(), "No animals in the shelter.");
                 case 0 -> {
                     System.out.println("Goodbye!");
                     running = false;
