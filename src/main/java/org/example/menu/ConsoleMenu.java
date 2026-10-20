@@ -1,12 +1,12 @@
 package org.example.menu;
 
+import org.example.model.AdoptionRecord;
 import org.example.model.Animal;
 import org.example.model.AnimalId;
 import org.example.model.Bird;
 import org.example.model.Cat;
 import org.example.model.Dog;
 import org.example.model.Rabbit;
-
 import org.example.shelter.Shelter;
 import org.example.util.AnimalStatistics;
 
@@ -31,6 +31,7 @@ public class ConsoleMenu {
             new MenuOption(6, "Sort animals by name"),
             new MenuOption(7, "Sort animals by age"),
             new MenuOption(8, "Show statistics"),
+            new MenuOption(9, "Show adoption history"),
             new MenuOption(0, "Exit")
     );
 
@@ -55,6 +56,7 @@ public class ConsoleMenu {
                 case 6 -> printAnimals(shelter.sortedByName(), "No animals in the shelter.");
                 case 7 -> printAnimals(shelter.sortedByAge(), "No animals in the shelter.");
                 case 8 -> printStatistics();
+                case 9 -> printHistory();
                 case 0 -> {
                     System.out.println("Goodbye!");
                     running = false;
@@ -91,7 +93,7 @@ public class ConsoleMenu {
             case "dog" -> new Dog(id, name, age);
             case "cat" -> new Cat(id, name, age);
             case "bird" -> new Bird(id, name, age);
-            case "rabbit" -> new Bird(id, name, age);
+            case "rabbit" -> new Rabbit(id, name, age);
             default -> throw new IllegalArgumentException(
                     "Unknown species: " + species + ". Allowed: " + SPECIES_HINT + ".");
         };
@@ -104,13 +106,15 @@ public class ConsoleMenu {
 
     private void markAsAdopted() {
         String id = readNonEmpty("Animal id: ");
+        String adopter = readNonEmpty("Adopter name: ");
         try {
-            shelter.markAsAdopted(id);
+            shelter.markAsAdopted(id, adopter);
             System.out.println("Animal marked as adopted.");
         } catch (IllegalArgumentException | IllegalStateException e) {
             System.out.println(e.getMessage());
         }
     }
+
     private void printStatistics() {
         List<Animal> all = shelter.getAllAnimals();
         if (all.isEmpty()) {
@@ -124,6 +128,16 @@ public class ConsoleMenu {
         AnimalStatistics.countBySpecies(all)
                 .forEach((species, count) -> System.out.println("  " + species + ": " + count));
     }
+
+    private void printHistory() {
+        List<AdoptionRecord> history = shelter.getAdoptionHistory();
+        if (history.isEmpty()) {
+            System.out.println("No adoptions yet.");
+            return;
+        }
+        history.forEach(System.out::println);
+    }
+
     private void printAnimals(List<Animal> animals, String emptyMessage) {
         if (animals.isEmpty()) {
             System.out.println(emptyMessage);
