@@ -10,7 +10,7 @@ import lombok.Getter;
  * @author Karyna Litvinova
  */
 @Getter
-public sealed abstract class Animal permits Dog, Cat, Bird {
+public sealed abstract class Animal permits Dog, Cat, Bird, Rabbit {
     private final AnimalId id;
     private final String name;
     private final int age;

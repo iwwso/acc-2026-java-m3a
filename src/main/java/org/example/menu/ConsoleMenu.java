@@ -5,6 +5,8 @@ import org.example.model.AnimalId;
 import org.example.model.Bird;
 import org.example.model.Cat;
 import org.example.model.Dog;
+import org.example.model.Rabbit;
+
 import org.example.shelter.Shelter;
 
 import java.util.List;
@@ -16,7 +18,7 @@ import java.util.Scanner;
  * @author Karyna Litvinova
  */
 public class ConsoleMenu {
-    private static final String SPECIES_HINT = "Dog/Cat/Bird";
+    private static final String SPECIES_HINT = "Dog/Cat/Bird/Rabbit";
 
     // menu items are records (immutable data carriers)
     private static final List<MenuOption> OPTIONS = List.of(
@@ -82,6 +84,7 @@ public class ConsoleMenu {
             case "dog" -> new Dog(id, name, age);
             case "cat" -> new Cat(id, name, age);
             case "bird" -> new Bird(id, name, age);
+            case "rabbit" -> new Bird(id, name, age);
             default -> throw new IllegalArgumentException(
                     "Unknown species: " + species + ". Allowed: " + SPECIES_HINT + ".");
         };
