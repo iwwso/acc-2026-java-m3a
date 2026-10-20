@@ -8,6 +8,7 @@ import org.example.model.Dog;
 import org.example.model.Rabbit;
 
 import org.example.shelter.Shelter;
+import org.example.util.AnimalStatistics;
 
 import java.util.List;
 import java.util.Scanner;
@@ -29,6 +30,7 @@ public class ConsoleMenu {
             new MenuOption(5, "Mark animal as adopted"),
             new MenuOption(6, "Sort animals by name"),
             new MenuOption(7, "Sort animals by age"),
+            new MenuOption(8, "Show statistics"),
             new MenuOption(0, "Exit")
     );
 
@@ -52,6 +54,7 @@ public class ConsoleMenu {
                 case 5 -> markAsAdopted();
                 case 6 -> printAnimals(shelter.sortedByName(), "No animals in the shelter.");
                 case 7 -> printAnimals(shelter.sortedByAge(), "No animals in the shelter.");
+                case 8 -> printStatistics();
                 case 0 -> {
                     System.out.println("Goodbye!");
                     running = false;
@@ -108,7 +111,19 @@ public class ConsoleMenu {
             System.out.println(e.getMessage());
         }
     }
-
+    private void printStatistics() {
+        List<Animal> all = shelter.getAllAnimals();
+        if (all.isEmpty()) {
+            System.out.println("No animals in the shelter.");
+            return;
+        }
+        System.out.printf("Total animals: %d%n", all.size());
+        System.out.printf("Average age: %.1f%n", AnimalStatistics.averageAge(all));
+        AnimalStatistics.oldest(all).ifPresent(a -> System.out.println("Oldest: " + a));
+        System.out.println("By species:");
+        AnimalStatistics.countBySpecies(all)
+                .forEach((species, count) -> System.out.println("  " + species + ": " + count));
+    }
     private void printAnimals(List<Animal> animals, String emptyMessage) {
         if (animals.isEmpty()) {
             System.out.println(emptyMessage);
